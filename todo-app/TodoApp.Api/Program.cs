@@ -6,10 +6,12 @@ using TodoApp.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database - prioritize DATABASE_URL env var for k8s deployments
-var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
-    ?? builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? "Host=localhost;Database=app;Username=app;Password=app";
+// Database - use PG* env vars for k8s deployments, fallback to config
+var pgHost = Environment.GetEnvironmentVariable("PGHOST");
+var connectionString = pgHost != null
+    ? $"Host={pgHost};Port={Environment.GetEnvironmentVariable("PGPORT") ?? "5432"};Database={Environment.GetEnvironmentVariable("PGDATABASE") ?? "app"};Username={Environment.GetEnvironmentVariable("PGUSER") ?? "app"};Password={Environment.GetEnvironmentVariable("PGPASSWORD") ?? "app"}"
+    : builder.Configuration.GetConnectionString("DefaultConnection")
+      ?? "Host=localhost;Database=app;Username=app;Password=app";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
