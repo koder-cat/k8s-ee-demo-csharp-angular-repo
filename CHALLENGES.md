@@ -94,6 +94,7 @@ No `tailwind.config.js` or `postcss.config.js` needed.
 
 | Aspect | Node.js | .NET |
 |--------|---------|------|
+| Default Port | 3000 | 8080 |
 | DB Connection | URI format works | Requires ADO.NET format |
 | Config Priority | Env vars override config | Config file takes precedence |
 | Build Target | Auto-detects arch | Needs explicit RID |
