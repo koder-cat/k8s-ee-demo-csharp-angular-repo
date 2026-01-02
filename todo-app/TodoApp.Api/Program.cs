@@ -6,9 +6,9 @@ using TodoApp.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? Environment.GetEnvironmentVariable("DATABASE_URL")
+// Database - prioritize DATABASE_URL env var for k8s deployments
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
     ?? "Host=localhost;Database=app;Username=app;Password=app";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
