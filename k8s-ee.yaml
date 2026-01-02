@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/genesluna/k8s-ephemeral-environments/main/.github/actions/validate-config/schema.json
+
+projectId: todo-app-dotnet
+
+app:
+  port: 8080
+  healthPath: /api/health
+
+image:
+  context: ./todo-app
+  dockerfile: Dockerfile
+
+databases:
+  postgresql: true
